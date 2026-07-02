@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcryptjs";
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -24,6 +24,16 @@ const userSchema = new mongoose.Schema({
     default: "buyer",
   },
 });
+
+userSchema.pre("save", async () => {
+  if (!this.isModified("password")) return;
+  const hash = await bcrypt.hash(this.password, 10);
+  this.password = hash;
+});
+
+userSchema.method.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 const userModel = mongoose.model("user", userSchema);
 export default userModel;
