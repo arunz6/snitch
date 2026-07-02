@@ -29,7 +29,7 @@ async function createjwt(user, res, message) {
 }
 
 export async function registercontroller(req, res, next) {
-  const { email, contact, password, fullname } = req.body;
+  const { email, contact, password, fullname, isseller } = req.body;
   try {
     const existinguser = await userModel.findOne({
       $or: [{ email }, { contact }],
@@ -45,6 +45,7 @@ export async function registercontroller(req, res, next) {
       contact,
       password,
       fullname,
+      role: isseller ? "buyer" : "seller",
     });
 
     createjwt(user, res, "user register done");
@@ -55,5 +56,3 @@ export async function registercontroller(req, res, next) {
     });
   }
 }
-
-export async function name(req, res, next) {}
