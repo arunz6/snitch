@@ -6,3 +6,6 @@ connectDB();
 app.listen(config.port, () => {
   console.log(`server is running at ${config.port} `);
 });
+
+//arun1234
+//password
