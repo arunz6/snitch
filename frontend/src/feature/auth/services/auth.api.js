@@ -19,5 +19,5 @@ export async function register({
     contact,
     isseller,
   });
-  return response.data;
+  return response.data; // ✅ yeh line add karo
 }

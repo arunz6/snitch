@@ -3,7 +3,6 @@ import userModel from "../model/user.model.js";
 import config from "../config/config.js";
 
 async function createjwt(user, res, message) {
-  const { email, fullname, contact } = user;
   const token = jwt.sign(
     {
       id: user._id,
@@ -35,24 +34,25 @@ export async function registercontroller(req, res, next) {
       $or: [{ email }, { contact }],
     });
 
-    if (!existinguser) {
+    if (existinguser) {
       return res.status(400).json({
-        message: "with this email or contact already exist ",
+        message: "User with this email or contact already exists",
       });
     }
+
     const user = await userModel.create({
       email,
       contact,
       password,
       fullname,
-      role: isseller ? "buyer" : "seller",
+      role: isseller ? "seller" : "buyer",
     });
 
-    createjwt(user, res, "user register done");
+    return await createjwt(user, res, "User registered successfully");
   } catch (err) {
     console.log("server error " + err);
-    return res.status(400).json({
-      message: "server error ",
+    return res.status(500).json({
+      message: "Server error",
     });
   }
 }
