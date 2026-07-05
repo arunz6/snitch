@@ -19,6 +19,9 @@ if (!process.env.CLINTSECRETGOOGLE) {
     "CLINTSECRETGOOGLE is not defined in the environment variables",
   );
 }
+if (!process.env.NODE_ENV) {
+  throw new Error("NODE_ENV is not defined in the environment variables");
+}
 
 const config = {
   mongoURI: process.env.MONGO_URI,
@@ -26,6 +29,7 @@ const config = {
   jwtSecret: process.env.JWTSECRET,
   clintIdGoogle: process.env.CLINTIDGOOGLE,
   clintSecretGoogle: process.env.CLINTSECRETGOOGLE,
+  nodeEnv: process.env.NODE_ENV || "development",
 };
 
 export default config;

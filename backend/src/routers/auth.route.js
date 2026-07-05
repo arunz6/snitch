@@ -3,6 +3,7 @@ import {
   validateregisteruser,
   validateLoginUser,
 } from "../validator/auth.validator.js";
+import config from "../config/config.js";
 import {
   registercontroller,
   loginController,
@@ -25,7 +26,13 @@ authrouter.get(
 
 authrouter.get(
   "/google/callback",
-  passport.authenticate("google", { session: false }),
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect:
+      config.nodeEnv === "development"
+        ? "http://localhost:5173/login"
+        : "/login",
+  }),
   googlecallback,
 );
 

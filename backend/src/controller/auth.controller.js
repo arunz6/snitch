@@ -84,6 +84,20 @@ export async function loginController(req, res, next) {
 }
 
 export async function googlecallback(req, res, next) {
-  console.log(req.user);
+  const { id, displayName, emails, photos } = req.user;
+  const email = emails[0].value;
+  let user = await userModel.findOne({ email });
+  if (!user) {
+    user = await userModel.create({
+      email,
+      fullname: displayName,
+      googleId: id,
+    });
+  }
+
+  const token = jwt.sign({ id: user._id }, config.jwtSecret, {
+    expiresIn: "7d",
+  });
+  res.cookie("token", token);
   res.redirect("http://localhost:5173/");
 }
