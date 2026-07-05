@@ -82,3 +82,8 @@ export async function loginController(req, res, next) {
     });
   }
 }
+
+export async function googlecallback(req, res, next) {
+  console.log(req.user);
+  res.redirect("http://localhost:5173/");
+}

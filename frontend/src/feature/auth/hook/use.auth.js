@@ -1,5 +1,5 @@
 import { setuser, setloading, seterror } from "../state/auth.slice";
-import { register } from "../services/auth.api";
+import { login, register } from "../services/auth.api";
 import { useDispatch } from "react-redux";
 
 export const useauth = () => {
@@ -22,5 +22,13 @@ export const useauth = () => {
     return data.user;
   }
 
-  return { handelregister };
+  async function handlelogin({ email, password }) {
+    const data = await login({
+      email,
+      password,
+    });
+    dispatch(setuser(data.user));
+    return data.user;
+  }
+  return { handelregister, handlelogin };
 };
