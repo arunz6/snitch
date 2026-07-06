@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import userModel from "../model/user.model.js";
 import config from "../config/config.js";
+
+// create jwt function use to give response of login and register gives jwt token and userdata
 async function createjwt(user, res, message) {
   const token = jwt.sign(
     {
@@ -26,6 +28,7 @@ async function createjwt(user, res, message) {
   });
 }
 
+// controller for user registration
 export async function registercontroller(req, res, next) {
   const { email, contact, password, fullname, isseller } = req.body;
   try {
@@ -56,6 +59,7 @@ export async function registercontroller(req, res, next) {
   }
 }
 
+// controller for user login
 export async function loginController(req, res, next) {
   const { email, password } = req.body;
   try {
@@ -83,6 +87,7 @@ export async function loginController(req, res, next) {
   }
 }
 
+// controller for user google callback for google login
 export async function googlecallback(req, res, next) {
   const { id, displayName, emails, photos } = req.user;
   const email = emails[0].value;
@@ -101,3 +106,5 @@ export async function googlecallback(req, res, next) {
   res.cookie("token", token);
   res.redirect("http://localhost:5173/");
 }
+
+
