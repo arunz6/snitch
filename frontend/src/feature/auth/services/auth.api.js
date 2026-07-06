@@ -19,7 +19,7 @@ export async function register({
     contact,
     isseller,
   });
-  return response.data; // ✅ yeh line add karo
+  return response.data; 
 }
 
 export async function login({ email, password }) {
