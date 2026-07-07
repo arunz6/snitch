@@ -9,7 +9,7 @@ import { createproduct, getproduct } from "../services/api.service";
 export const useproduct = () => {
   const dispatch = useDispatch();
   async function handlecreateproduct(FormData) {
-    const data = await createproduct(FormData); 
+    const data = await createproduct(FormData);
     return data.product;
   }
 
