@@ -74,3 +74,20 @@ export async function getAllProducts(req, res, next) {
       .json({ message: error.message || "Internal server error" });
   }
 }
+
+export async function getProductDeta(req, res, next) {
+  const { id } = req.params;
+  try {
+    const product = await productModel.findById(id);
+    return res.status(200).json({
+      success: true,
+      message: "Product fetched successfully",
+      product,
+     })
+  }
+  catch(error){
+    console.log(error);
+    return res.status(500).json({message : error.message || "Internal server error"});
+  }
+  
+}

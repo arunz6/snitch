@@ -3,6 +3,7 @@ import {
   createProduct,
   getproducs,
   getAllProducts,
+  getProductDeta,
 } from "../controller/product.controller.js";
 import { isSeller } from "../middleware/auth.middleware.js";
 import multer from "multer";
@@ -28,9 +29,10 @@ productroutes.post(
 //http://localhost:3000/api/product/getproducs
 productroutes.get("/getproducs", isSeller, getproducs);
 
-
-
 //http://localhost:3000/api/product/allproducts
 productroutes.get("/allproducts", getAllProducts);
+
+//http://localhost:3000/api/product/productdetail/:id
+productroutes.get("/productdetail/:id", getProductDeta);
 
 export default productroutes;
