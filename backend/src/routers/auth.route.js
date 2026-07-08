@@ -8,7 +8,9 @@ import {
   registercontroller,
   loginController,
   googlecallback,
+  getmecontroller,
 } from "../controller/auth.controller.js";
+import { getme } from "../middleware/auth.middleware.js";
 import passport from "passport";
 const authrouter = Router();
 
@@ -35,5 +37,8 @@ authrouter.get(
   }),
   googlecallback,
 );
+
+//http://localhost:3000/api/auth/me
+authrouter.get("/me", getme, getmecontroller);
 
 export default authrouter;

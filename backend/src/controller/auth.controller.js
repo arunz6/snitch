@@ -108,3 +108,18 @@ export async function googlecallback(req, res, next) {
 }
 
 
+export async function getmecontroller(req, res, next) {
+  try {
+    const user = req.user;
+    return res.status(200).json({
+      message: "User fetched successfully",
+      success: true,
+      user: user,
+    });
+  } catch (err) {
+    console.log("server error " + err);
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
+}

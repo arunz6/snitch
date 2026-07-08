@@ -25,3 +25,21 @@ export async function isSeller(req, res, next) {
     return res.status(401).json({ message: "token not verified" });
   }
 }
+
+export async function getme(req, res, next) {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ message: "token not present" });
+  }
+  try {
+    const decodedToken = jwt.verify(token, config.jwtSecret);
+    const user = await userModel.findById(decodedToken.id).select("-password");
+    if (!user) {
+      return res.status(401).json({ message: "user not found" });
+    }
+    req.user = user;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "token not verified" });
+  }
+}
