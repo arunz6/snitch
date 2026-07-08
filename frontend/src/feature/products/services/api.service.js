@@ -16,3 +16,10 @@ export const getproduct = async () => {
   const response = await productapiinstance.get("/getproducs");
   return response.data;
 };
+
+
+export const getallproductsuser = async () => {
+    const response = await productapiinstance.get("/allproducts");
+    return response.data;
+};
+
