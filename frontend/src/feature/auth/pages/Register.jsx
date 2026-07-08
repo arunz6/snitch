@@ -24,14 +24,19 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handelregister({
+  const userdata =   await handelregister({
       fullname: fullName,
       email,
       password,
       contact,
       isseller: isSeller,
     });
-    navigate("/");
+    if (userdata.role == "buyer") {
+        navigate("/");
+      }
+      if (userdata.role == "seller") {
+        navigate("/seller/productdashbord");
+      }
   };
   return (
     <div className="flex flex-col bg-background min-h-screen font-body-lg text-on-background antialiased">

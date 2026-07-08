@@ -17,11 +17,16 @@ export default function Login() {
     setError(null);
     setLoading(true);
     try {
-      await handlelogin({
+      const userdata = await handlelogin({
         email,
         password,
       });
-      navigate("/");
+      if (userdata.role == "buyer") {
+        navigate("/");
+      }
+      if (userdata.role == "seller") {
+        navigate("/seller/productdashbord");
+      }
     } catch (err) {
       setError(
         err.response?.data?.message ||
