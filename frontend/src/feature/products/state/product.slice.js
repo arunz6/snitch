@@ -20,9 +20,17 @@ const productslice = createSlice({
     setallproducts: (state, action) => {
       state.allproducts = action.payload;
     },
+    setproductdetail: (state, action) => {
+      state.productdetail = action.payload;
+    },
   },
 });
 
-export const { setsellerproducts, setloading, seterror, setallproducts } =
-  productslice.actions;
+export const {
+  setsellerproducts,
+  setloading,
+  seterror,
+  setallproducts,
+  setproductdetail,
+} = productslice.actions;
 export default productslice.reducer;

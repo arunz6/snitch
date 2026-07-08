@@ -5,9 +5,7 @@ const productapiinstance = axios.create({
   withCredentials: true,
 });
 
-export const createproduct = async (
-FormData
-) => {
+export const createproduct = async (FormData) => {
   const response = await productapiinstance.post("/createproduct", FormData);
   return response.data;
 };
@@ -17,9 +15,12 @@ export const getproduct = async () => {
   return response.data;
 };
 
-
 export const getallproductsuser = async () => {
-    const response = await productapiinstance.get("/allproducts");
-    return response.data;
+  const response = await productapiinstance.get("/allproducts");
+  return response.data;
 };
 
+export const getproductdetail = async (id) => {
+  const response = await productapiinstance.get(`/productdetail/${id}`);
+  return response.data;
+};
