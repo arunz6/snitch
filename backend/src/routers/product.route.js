@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { createProduct, getproducs } from "../controller/product.controller.js";
+import {
+  createProduct,
+  getproducs,
+  getAllProducts,
+} from "../controller/product.controller.js";
 import { isSeller } from "../middleware/auth.middleware.js";
 import multer from "multer";
 import { createProductValidator } from "../validator/product.validator.js";
@@ -23,5 +27,10 @@ productroutes.post(
 
 //http://localhost:3000/api/product/getproducs
 productroutes.get("/getproducs", isSeller, getproducs);
+
+
+
+//http://localhost:3000/api/product/allproducts
+productroutes.get("/allproducts", getAllProducts);
 
 export default productroutes;

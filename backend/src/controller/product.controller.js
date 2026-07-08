@@ -57,3 +57,20 @@ export async function getproducs(req, res, next) {
       .json({ message: error.message || "Internal server error" });
   }
 }
+
+export async function getAllProducts(req, res, next) {
+  try {
+    const products = await productModel.find({});
+
+    return res.status(200).json({
+      success: true,
+      message: "Products fetched successfully",
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: error.message || "Internal server error" });
+  }
+}
