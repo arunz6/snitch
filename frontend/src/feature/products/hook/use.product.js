@@ -20,8 +20,9 @@ export const useproduct = () => {
   }
 
   async function handlgetallproductuser() {
-    const data = getallproductsuser();
+    const data = await getallproductsuser();
     dispatch(setallproducts(data.products));
+
     return data.products;
   }
   return {
