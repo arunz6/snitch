@@ -17,6 +17,7 @@ const productslice = createSlice({
     seterror: (state, action) => {
       state.error = action.payload;
     },
+    
   },
 });
 
