@@ -9,7 +9,7 @@ const ProductDashboard = () => {
 const sellerproduct = useSelector((state) => state.product.sellersproduct);
   useEffect(() => {
     handleGetProducts();
-  }, []);
+  }, [sellerproduct]);
  
   return (
    <div className="min-h-screen bg-background text-on-background px-margin-mobile md:px-margin-desktop py-16 max-w-container-max mx-auto">
