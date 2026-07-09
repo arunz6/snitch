@@ -70,7 +70,9 @@ const ProductCard = ({ product }) => {
   const formattedPrice = new Intl.NumberFormat('en-IN').format(product.price.amount);
  
   return (
-    <div className="group relative flex flex-col gap-6 cursor-pointer border border-transparent hover:border-outline-variant p-4 transition-all duration-500">
+    <div className="group relative flex flex-col gap-6 cursor-pointer border border-transparent hover:border-outline-variant p-4 transition-all duration-500"
+    onClick={()=>navigate(`/seller/Sellerproductdetails/${product._id}`)}
+    >
       <div className="aspect-square overflow-hidden bg-surface-container-low">
         <img
           src={image?.url}
