@@ -5,15 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const Sellerproductdetails = () => {
-  const { handleGetProducts } = useproduct();
+  const { handleGetProducts ,handlegetproductdetail } = useproduct();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {id}=useParams()
   const sellerproduct = useSelector((state) => state.product.sellersproduct);
   useEffect(() => {
-    handleGetProducts("6a4e220ef8c3be2faf116f55");
+ handlegetproductdetail("6a4e220ef8c3be2faf116f55");
+
   }, []);
-  console.log(sellerproduct)
+ 
   return <div></div>;
 };
 
