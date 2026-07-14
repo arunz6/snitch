@@ -9,7 +9,7 @@ const ProductDashboard = () => {
 const sellerproduct = useSelector((state) => state.product.sellersproduct);
   useEffect(() => {
     handleGetProducts();
-  }, [sellerproduct]);
+  }, []);
  
   return (
    <div className="min-h-screen bg-background text-on-background px-margin-mobile md:px-margin-desktop py-16 max-w-container-max mx-auto">
@@ -68,7 +68,7 @@ const ProductCard = ({ product }) => {
   // Images is capitalized in the API response — easy to miss
   const image = product.Images?.[0];
   const formattedPrice = new Intl.NumberFormat('en-IN').format(product.price.amount);
- 
+ const navigate = useNavigate()
   return (
     <div className="group relative flex flex-col gap-6 cursor-pointer border border-transparent hover:border-outline-variant p-4 transition-all duration-500"
     onClick={()=>navigate(`/seller/Sellerproductdetails/${product._id}`)}
