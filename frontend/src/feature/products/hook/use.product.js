@@ -9,6 +9,9 @@ import {
   getproduct,
   getallproductsuser,
   getproductdetail,
+  addVariant,
+  updateVariantStock,
+  deleteVariant,
 } from "../services/api.service";
 
 export const useproduct = () => {
@@ -34,7 +37,24 @@ export const useproduct = () => {
   async function handlegetproductdetail(id) {
     const data = await getproductdetail(id);
     dispatch(setproductdetail(data.product));
-    console.log(data.product);
+    return data.product;
+  }
+
+  async function handlecreatevariant(id, formData) {
+    const data = await addVariant(id, formData);
+    dispatch(setproductdetail(data.product));
+    return data.product;
+  }
+
+  async function handleupdatevariantstock(id, variantId, stock) {
+    const data = await updateVariantStock(id, variantId, stock);
+    dispatch(setproductdetail(data.product));
+    return data.product;
+  }
+
+  async function handledeletevariant(id, variantId) {
+    const data = await deleteVariant(id, variantId);
+    dispatch(setproductdetail(data.product));
     return data.product;
   }
 
@@ -42,7 +62,9 @@ export const useproduct = () => {
     handlecreateproduct,
     handleGetProducts,
     handlgetallproductuser,
-    handlegetproductdetail
+    handlegetproductdetail,
+    handlecreatevariant,
+    handleupdatevariantstock,
+    handledeletevariant,
   };
 };
-  
