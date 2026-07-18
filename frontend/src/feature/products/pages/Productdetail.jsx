@@ -12,6 +12,7 @@ const Productdetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('M');
   const [openAccordion, setOpenAccordion] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
   useEffect(() => {
     if (id) {
@@ -19,13 +20,50 @@ const Productdetail = () => {
     }
   }, [id]);
 
+  // Reset variant selection when product changes (e.g., navigating to a new product)
+  useEffect(() => {
+    setSelectedVariant(null);
+    setSelectedImage(0);
+    setSelectedSize('M');
+  }, [product?._id]);
+
+  const handleVariantChange = (variant) => {
+    // Clicking the already-selected variant deselects it (back to default product)
+    if (selectedVariant?._id === variant._id) {
+      setSelectedVariant(null);
+      setSelectedImage(0);
+      setSelectedSize('M');
+      return;
+    }
+    setSelectedVariant(variant);
+    setSelectedImage(0);
+    if (variant?.attributes?.size) {
+      const varSizes = variant.attributes.size.split(',').map(s => s.trim());
+      if (varSizes.length > 0) {
+        setSelectedSize(varSizes[0]);
+      }
+    } else {
+      setSelectedSize('M');
+    }
+  };
   // Format price to INR
   const formatPrice = (amount) => {
     if (!amount && amount !== 0) return '₹0';
     return `₹${Number(amount).toLocaleString('en-IN')}`;
   };
 
-  const sizes = ['S', 'M', 'L', 'XL'];
+  // When a variant is selected, show its sizes. Otherwise show default sizes.
+  const sizes = selectedVariant?.attributes?.size
+    ? selectedVariant.attributes.size.split(',').map(s => s.trim())
+    : [];
+
+  // Display price: variant price if selected, otherwise product base price
+  const displayPrice = selectedVariant?.price?.amount ?? product?.price?.amount;
+
+  // Display images: variant images if selected, otherwise product images
+  const activeImages = selectedVariant?.images?.length > 0
+    ? selectedVariant.images
+    : (product?.Images || []);
 
   const accordionItems = [
     {
@@ -60,7 +98,7 @@ const Productdetail = () => {
     },
   ];
 
-  const images = product?.Images || [];
+  const images = activeImages;
   const currentImage = images[selectedImage]?.url || '';
 
   if (!product) {
@@ -207,7 +245,15 @@ const Productdetail = () => {
                 className="text-xl md:text-2xl text-primary"
                 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600 }}
               >
-                {formatPrice(product.price?.amount)}
+                {formatPrice(displayPrice)}
+                {selectedVariant && (
+                  <span
+                    className="ml-3 text-xs text-on-surface-variant font-normal tracking-widest uppercase"
+                    style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
+                  >
+                    Variant Price
+                  </span>
+                )}
               </p>
             </header>
 
@@ -220,8 +266,86 @@ const Productdetail = () => {
                 {product.description}
               </p>
 
+              {/* Variants Section */}
+              {product.variants && product.variants.length > 0 && (
+                <div className="space-y-4 pt-2 border-t border-outline-variant/30">
+                  <div className="flex justify-between items-center">
+                    <span
+                      className="text-xs font-semibold tracking-[0.15em] uppercase text-on-surface"
+                      style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
+                    >
+                      Select Variant
+                    </span>
+                    <span className="text-xs text-primary font-semibold tracking-wider uppercase font-mono">
+                      {selectedVariant
+                        ? (selectedVariant.attributes?.color || 'Variant Selected')
+                        : 'Default'}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {product.variants.map((variant) => {
+                      const isSelected = selectedVariant?._id === variant._id;
+                      const variantColor = variant.attributes?.color;
+                      const variantImage = variant.images?.[0]?.url;
+
+                      return (
+                        <button
+                          key={variant._id}
+                          onClick={() => handleVariantChange(variant)}
+                          title={isSelected ? 'Click to deselect (back to default)' : `Select ${variantColor || 'this variant'}`}
+                          className={`group relative flex items-center gap-3 p-2 border transition-all duration-300 cursor-pointer ${
+                            isSelected
+                              ? 'border-primary bg-surface-container ring-1 ring-primary/40'
+                              : 'border-outline-variant hover:border-primary bg-transparent'
+                          }`}
+                        >
+                          {/* Active ring indicator */}
+                          {isSelected && (
+                            <span className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-primary rounded-full flex items-center justify-center">
+                              <span className="material-symbols-outlined text-on-primary" style={{ fontSize: '10px', fontVariationSettings: "'FILL' 1" }}>check</span>
+                            </span>
+                          )}
+                          {variantImage ? (
+                            <div className="w-10 h-12 overflow-hidden border border-outline-variant/50">
+                              <img
+                                src={variantImage}
+                                alt={variantColor || 'Variant'}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-10 h-12 flex items-center justify-center bg-surface-container-high border border-outline-variant/50">
+                              <span className="material-symbols-outlined text-sm text-outline">image</span>
+                            </div>
+                          )}
+                          <div className="flex flex-col items-start pr-2">
+                            <span className={`text-xs font-semibold uppercase tracking-wider ${
+                              isSelected ? 'text-primary' : 'text-on-surface'
+                            }`}>
+                              {variantColor || 'Variant'}
+                            </span>
+                            <span className="text-[10px] text-on-surface-variant font-mono">
+                              {formatPrice(variant.price?.amount)}
+                            </span>
+                            {variant.stock <= 0 && (
+                              <span className="text-[9px] text-error tracking-widest uppercase mt-0.5">Out of Stock</span>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {/* Helper text */}
+                  <p className="text-[10px] text-on-surface-variant tracking-wider" style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}>
+                    {selectedVariant
+                      ? 'Showing variant images & price — click again to return to default'
+                      : 'Showing default product — click a variant to see its images & price'}
+                  </p>
+                </div>
+              )}
+
               {/* Size Selector */}
-              <div className="space-y-4">
+              <div className="space-y-4 pt-2 border-t border-outline-variant/30">
                 <div className="flex justify-between items-center">
                   <span
                     className="text-xs font-semibold tracking-[0.15em] uppercase text-on-surface"
@@ -236,12 +360,12 @@ const Productdetail = () => {
                     Size Guide
                   </button>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 flex-wrap">
                   {sizes.map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`w-12 h-12 flex items-center justify-center border text-xs font-semibold tracking-[0.15em] transition-all duration-300 ${
+                      className={`w-12 h-12 flex items-center justify-center border text-xs font-semibold tracking-[0.15em] transition-all duration-300 cursor-pointer ${
                         selectedSize === size
                           ? 'bg-primary text-on-primary border-primary'
                           : 'border-outline text-on-surface hover:border-primary'
@@ -252,22 +376,38 @@ const Productdetail = () => {
                     </button>
                   ))}
                 </div>
+                {/* Stock Level display */}
+                {selectedVariant && (
+                  <div className="text-xs tracking-wider pt-1">
+                    {selectedVariant.stock > 0 ? (
+                      <span className="text-primary font-semibold text-[11px] tracking-widest uppercase">
+                        In Stock — {selectedVariant.stock} Pieces Available
+                      </span>
+                    ) : (
+                      <span className="text-error font-semibold text-[11px] tracking-widest uppercase">
+                        Out of Stock
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
             {/* CTA Buttons */}
             <div className="space-y-4 pt-2 md:pt-4">
               <button
-                className="w-full bg-primary text-on-primary h-14 text-xs font-semibold tracking-[0.2em] uppercase hover:opacity-90 transition-opacity"
+                disabled={selectedVariant && selectedVariant.stock <= 0}
+                className="w-full bg-primary text-on-primary h-14 text-xs font-semibold tracking-[0.2em] uppercase hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
               >
-                Buy Now
+                {selectedVariant && selectedVariant.stock <= 0 ? 'Out of Stock' : 'Buy Now'}
               </button>
               <button
-                className="w-full bg-transparent border border-outline text-on-surface h-14 text-xs font-semibold tracking-[0.2em] uppercase hover:border-primary hover:text-primary transition-all duration-300"
+                disabled={selectedVariant && selectedVariant.stock <= 0}
+                className="w-full bg-transparent border border-outline text-on-surface h-14 text-xs font-semibold tracking-[0.2em] uppercase hover:border-primary hover:text-primary transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
               >
-                Add to Bag
+                {selectedVariant && selectedVariant.stock <= 0 ? 'Out of Stock' : 'Add to Bag'}
               </button>
             </div>
 
