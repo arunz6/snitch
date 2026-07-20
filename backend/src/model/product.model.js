@@ -12,15 +12,8 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     price: {
-      amount: {
-        type: Number,
-        required: true,
-      },
-      currency: {
-        type: String,
-        enum: ["USD", "EUR", "GBP", "INR", "JPY"],
-        default: "INR",
-      },
+      type: priceSchema,
+      required: true,
     },
     seller: {
       type: mongoose.Schema.Types.ObjectId,
