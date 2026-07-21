@@ -6,7 +6,10 @@ const cartapiinstance = axios.create({
 });
 
 export const additem = async ({ productid, variantid }) => {
-  const response = await cartapiinstance.post(`/add/${productid}/${variantid}`);
+  const response = await cartapiinstance.post(
+    `/add/${productid}/${variantid}`,
+    { quantity: 1 },
+  );
   return response.data;
 };
 

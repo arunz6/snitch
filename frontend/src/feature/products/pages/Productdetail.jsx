@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useproduct } from '../hook/use.product';
+import useCart from "../../cart/hook/use.cart";
 
 const Productdetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { handlegetproductdetail } = useproduct();
+  const { handeladdtocart } = useCart();
   const product = useSelector((state) => state.product.productdetail);
 
   const [selectedImage, setSelectedImage] = useState(0);
@@ -101,6 +103,16 @@ const Productdetail = () => {
   const images = activeImages;
   const currentImage = images[selectedImage]?.url || '';
 
+  useEffect(() => {
+  if (product?.variants?.length > 0) {
+    setSelectedVariant(product.variants[0]);   // 👈 default first variant
+  } else {
+    setSelectedVariant(null);
+  }
+  setSelectedImage(0);
+  setSelectedSize('M');
+}, [product?._id]);
+
   if (!product) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -114,6 +126,8 @@ const Productdetail = () => {
     );
   }
 
+
+  
   return (
     <div className="min-h-screen bg-background text-on-background font-body-md selection:bg-primary/30 selection:text-on-primary">
       {/* ── TopNavBar ── */}
@@ -402,8 +416,10 @@ const Productdetail = () => {
               >
                 {selectedVariant && selectedVariant.stock <= 0 ? 'Out of Stock' : 'Buy Now'}
               </button>
+              {/* add to cart  */}
               <button
                 disabled={selectedVariant && selectedVariant.stock <= 0}
+                onClick={() => handeladdtocart({ productid: product._id, variantid: selectedVariant._id })}
                 className="w-full bg-transparent border border-outline text-on-surface h-14 text-xs font-semibold tracking-[0.2em] uppercase hover:border-primary hover:text-primary transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
               >

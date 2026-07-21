@@ -32,7 +32,7 @@ export const useauth = () => {
   }
 
   async function handlegetme() {
-    const data = await login();
+    const data = await getme();
     dispatch(setuser(data.user));
     return data.user;
   }

@@ -7,7 +7,7 @@ export const addtocart = async (req, res) => {
   const { quantity = 1 } = req.body;
   const user = req.user;
 
-  const product = await productModel.findone({
+  const product = await productModel.findOne({   
     _id: productId,
     "variants._id": variantId,
   });
@@ -31,7 +31,7 @@ export const addtocart = async (req, res) => {
       item.variant.toString() === variantId,
   );
 
-  if (!isproductareadyincart) {
+  if (isproductareadyincart) {  
     const quantityInCart = cart.items.find(
       (item) =>
         item.product.toString() === productId &&
@@ -44,6 +44,7 @@ export const addtocart = async (req, res) => {
         success: false,
       });
     }
+
     await cartmodel.findOneAndUpdate(
       {
         user: req.user._id,
@@ -55,11 +56,12 @@ export const addtocart = async (req, res) => {
     );
 
     return res.status(200).json({
-      message: "cart updated sucessfully ",
+      message: "cart updated sucessfully",
       success: true,
     });
   }
 
+  // 👇 yeh ab "product cart me NAHI hai" wala case handle karega — naya item push karega
   if (quantity > stock) {
     return res.status(400).json({
       message: `only ${stock} items left in stock.`,
