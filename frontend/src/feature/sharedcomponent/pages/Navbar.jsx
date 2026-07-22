@@ -14,7 +14,7 @@ const Navbar = () => {
       {/* Left: Logo */}
       <div className="flex items-center gap-8">
         <h1 className="text-2xl md:text-3xl font-serif tracking-wide text-amber-400 select-none"
-     onClick={()=>navigate("/")}
+     onClick={()=>navigate(-1)}
         >
           SNITCH
         </h1>
@@ -59,7 +59,7 @@ const Navbar = () => {
         onClick={()=>{navigate('/cart')}}
         >
           <ShoppingBag size={20} strokeWidth={1.5} />
-          <span className="text-sm">(0)</span>
+          <span className="text-sm"></span>
         </button>
       </div>
     </div>
