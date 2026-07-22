@@ -1,12 +1,19 @@
-import React, { useState } from 'react'
-import { Search, User, ShoppingBag } from 'lucide-react'
-
+import React, { useState } from "react";
+import { Search, User, ShoppingBag } from "lucide-react";
+import useCart from "../../cart/hook/use.cart";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
-  const [searchOpen, setSearchOpen] = useState(false)
-
+  const { totalQuantity } = useCart();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const navigate = useNavigate();
+  const { handlegetcart } = useCart();
+  async function getcartdata () {
+    const data  = await handlegetcart()
+    console.log(data)
+    
+  }
   return (
     <div className="w-full bg-black px-6 md:px-10 py-4 flex items-center justify-between border-b border-neutral-800">
-      
       {/* Left: Logo */}
       <div className="flex items-center gap-8">
         <h1 className="text-2xl md:text-3xl font-serif tracking-wide text-amber-400 select-none">
@@ -50,13 +57,17 @@ const Navbar = () => {
         <button
           className="flex items-center gap-2 text-neutral-300 hover:text-amber-400 transition-colors"
           aria-label="Cart"
+          onClick={() => {
+            getcartdata();
+            console.log("clicked")
+          }}
         >
           <ShoppingBag size={20} strokeWidth={1.5} />
           <span className="text-sm">(0)</span>
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

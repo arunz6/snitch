@@ -86,10 +86,10 @@ export const addtocart = async (req, res) => {
 
 export const getcart = async (req, res) => {
   const user = req.user;
-  let cart = cartmodel.findOne({ user: user._id }).populate("items.product");
+  let cart = await cartmodel.findOne({ user: user._id }).populate("items.product");
 
   if (!cart) {
-    cart = cartmodel.create({ user: user._id });
+    cart = await cartmodel.create({ user: user._id });
   }
 
   return res.status(200).json({
