@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useproduct } from '../hook/use.product';
 import useCart from "../../cart/hook/use.cart";
+import Navbar from '../../sharedcomponent/pages/Navbar';
 
 const Productdetail = () => {
   const { id } = useParams();
@@ -131,54 +132,7 @@ const Productdetail = () => {
   return (
     <div className="min-h-screen bg-background text-on-background font-body-md selection:bg-primary/30 selection:text-on-primary">
       {/* ── TopNavBar ── */}
-      <nav className="fixed top-0 w-full z-50 flex justify-between items-center px-5 md:px-16 h-20 bg-background/95 backdrop-blur-sm border-b border-outline-variant">
-        <div className="flex items-center gap-6 md:gap-12">
-          <span
-            className="text-3xl md:text-4xl tracking-tighter text-primary cursor-pointer"
-            style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700 }}
-            onClick={() => navigate('/')}
-          >
-            SNITCH
-          </span>
-          <div className="hidden md:flex gap-8">
-            <a
-              className="text-xs font-semibold tracking-[0.15em] uppercase text-primary border-b border-primary pb-1 transition-opacity hover:opacity-80"
-              style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
-              href="#"
-            >
-              Collections
-            </a>
-            <a
-              className="text-xs font-semibold tracking-[0.15em] uppercase text-on-surface-variant hover:text-primary transition-colors duration-300"
-              style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
-              href="#"
-            >
-              Editorial
-            </a>
-            <a
-              className="text-xs font-semibold tracking-[0.15em] uppercase text-on-surface-variant hover:text-primary transition-colors duration-300"
-              style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
-              href="#"
-            >
-              Archive
-            </a>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 md:gap-6">
-          <button className="cursor-pointer transition-opacity hover:opacity-80">
-            <span className="material-symbols-outlined text-primary">person</span>
-          </button>
-          <button className="cursor-pointer transition-opacity hover:opacity-80 flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary">shopping_bag</span>
-            <span
-              className="hidden sm:inline text-xs font-semibold tracking-[0.15em] uppercase text-primary"
-              style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
-            >
-              BAG (0)
-            </span>
-          </button>
-        </div>
-      </nav>
+     <Navbar/>
 
       {/* ── Main Content ── */}
       <main className="pt-28 md:pt-32 pb-20 px-5 md:px-16 max-w-[1440px] mx-auto">

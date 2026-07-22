@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useproduct } from '../hook/use.product';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../../sharedcomponent/pages/Navbar';
 
 // Ebon & Gilt palette
 const COLORS = {
@@ -31,6 +32,9 @@ const Home = () => {
         className="min-h-screen selection:bg-[#EAB308]/30"
         style={{ backgroundColor: COLORS.secondary, fontFamily: "'Hanken Grotesk', sans-serif" }}
       >
+        {/* ── Navbar ── */}
+        <Navbar />
+
         <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24">
           {/* ── Hero / Header ── */}
           <div className="pt-20 pb-20 text-center flex flex-col items-center">
@@ -67,7 +71,6 @@ const Home = () => {
                     key={product._id}
                     className="group cursor-pointer flex flex-col"
                   >
-                    {/* Image Container */}
                     <div
                       className="aspect-[4/5] overflow-hidden mb-6 border border-white/10"
                       style={{ backgroundColor: '#141414' }}
@@ -79,7 +82,6 @@ const Home = () => {
                       />
                     </div>
 
-                    {/* Product Details */}
                     <div className="flex flex-col gap-2">
                       <h3
                         className="text-xl leading-snug transition-colors duration-300 group-hover:text-[#60C5FF]"
