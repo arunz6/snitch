@@ -7,11 +7,16 @@ import ProductDashboard from "../feature/products/pages/Productdashbord";
 import Protected from "../feature/auth/components/Protected";
 import Productdetail from "../feature/products/pages/Productdetail";
 import Sellerproductdetails from "../feature/products/pages/Sellerproductdetails";
+import Cart from "../feature/cart/pages/Cart";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path:"/cart",
+    element: <Cart/>
   },
   {
     path: "/register",
