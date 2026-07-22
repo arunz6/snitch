@@ -12,7 +12,6 @@ const useCart = () => {
 
   async function handlegetcart() {
     const data = await getusercart();
-    console.log("data", data);
     dispatch(setitems(data));
   }
 

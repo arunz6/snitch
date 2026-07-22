@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import  useCart  from '../hook/use.cart';
 import { useNavigate } from 'react-router-dom';
-
+import Navbar from "../../sharedcomponent/pages/Navbar"
 const COLORS = {
   primary: '#EAB308',
   secondary: '#0A0A0A',
@@ -35,13 +35,15 @@ const Cart = () => {
     (sum, item) => sum + (item.price?.amount || 0) * item.quantity,
     0
   );
-console.log("cart ",  items)
+
   return (
     <div
       className="min-h-screen"
       style={{ backgroundColor: COLORS.secondary, fontFamily: "'Hanken Grotesk', sans-serif" }}
     >
+      <Navbar/>
       <div className="max-w-6xl mx-auto px-6 lg:px-12 py-16">
+      
         {/* Header */}
         <div className="mb-12">
           <span
