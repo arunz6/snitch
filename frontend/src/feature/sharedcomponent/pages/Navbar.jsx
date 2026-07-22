@@ -14,7 +14,7 @@ const Navbar = () => {
       {/* Left: Logo */}
       <div className="flex items-center gap-8">
         <h1 className="text-2xl md:text-3xl font-serif tracking-wide text-amber-400 select-none"
-     
+     onClick={()=>navigate("/")}
         >
           SNITCH
         </h1>
