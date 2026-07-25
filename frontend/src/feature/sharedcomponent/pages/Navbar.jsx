@@ -11,7 +11,17 @@ const Navbar = () => {
 
   
    const user  = useSelector((state) => state.auth.user);
+  async function handelprofiledata() {
   
+    console.log(user,"user");
+  
+  if(!user){
+    navigate('/login')
+    return; 
+  }
+  
+   navigate("/cart")
+  }
   return (
     <div className="w-full bg-black px-6 md:px-10 py-4 flex items-center justify-between border-b border-neutral-800">
       {/* Left: Logo */}
@@ -62,7 +72,7 @@ const Navbar = () => {
         <button
           className="flex items-center gap-2 text-neutral-300 hover:text-amber-400 transition-colors"
           aria-label="Cart"
-        onClick={()=>{navigate('/cart')}}
+        onClick={()=>{handelprofiledata()}}
         >
           <ShoppingBag size={20} strokeWidth={1.5} />
           <span className="text-sm"></span>

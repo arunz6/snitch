@@ -106,6 +106,7 @@ const Productdetail = () => {
   const images = activeImages;
   const currentImage = images[selectedImage]?.url || '';
 
+  
 async function handeladdtocartbutton() {
 
   console.log(user,"user");
