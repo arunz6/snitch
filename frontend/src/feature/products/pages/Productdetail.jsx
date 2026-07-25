@@ -17,6 +17,8 @@ const Productdetail = () => {
   const [openAccordion, setOpenAccordion] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(null);
 
+
+   const user  = useSelector((state) => state.auth.user);
   useEffect(() => {
     if (id) {
       handlegetproductdetail(id);
@@ -103,6 +105,19 @@ const Productdetail = () => {
 
   const images = activeImages;
   const currentImage = images[selectedImage]?.url || '';
+
+async function handeladdtocartbutton() {
+
+  console.log(user,"user");
+
+if(!user){
+  navigate('/login')
+  return; 
+}
+
+  handeladdtocart({ productid: product._id, variantid: selectedVariant._id })
+}
+
 
   useEffect(() => {
   if (product?.variants?.length > 0) {
@@ -373,7 +388,7 @@ const Productdetail = () => {
               {/* add to cart  */}
               <button
                 disabled={selectedVariant && selectedVariant.stock <= 0}
-                onClick={() => handeladdtocart({ productid: product._id, variantid: selectedVariant._id })}
+                onClick={() =>handeladdtocartbutton()}
                 className="w-full bg-transparent border border-outline text-on-surface h-14 text-xs font-semibold tracking-[0.2em] uppercase hover:border-primary hover:text-primary transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
               >
