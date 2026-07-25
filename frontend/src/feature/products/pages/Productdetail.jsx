@@ -437,58 +437,7 @@ if(!user){
           </div>
         </div>
 
-        {/* ── Editorial Section ── */}
-        <section className="mt-20 md:mt-40 border-t border-outline-variant pt-12 md:pt-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
-            <div className="space-y-6 md:space-y-8">
-              <h2
-                className="text-3xl md:text-5xl lg:text-6xl text-on-surface leading-tight"
-                style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700 }}
-              >
-                The Art of <br />
-                <span className="italic text-primary">Precise</span> Drapery
-              </h2>
-              <p
-                className="text-base md:text-lg text-on-surface-variant max-w-lg leading-relaxed"
-                style={{ fontFamily: "'Hanken Grotesk', sans-serif", letterSpacing: '0.03em' }}
-              >
-                Every SNITCH piece is a dialogue between the wearer and the
-                architect. We don't just design clothes; we define the space
-                around the body using the world's most opulent materials.
-              </p>
-              <a
-                className="inline-block border-b border-primary text-primary text-xs font-semibold tracking-widest uppercase py-2 hover:opacity-70 transition-opacity"
-                style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
-                href="#"
-              >
-                Explore the Editorial
-              </a>
-            </div>
-            <div className="relative aspect-video overflow-hidden">
-              {images.length > 1 ? (
-                <img
-                  className="w-full h-full object-cover"
-                  src={images[1]?.url || images[0]?.url}
-                  alt="Editorial"
-                />
-              ) : (
-                <div className="w-full h-full bg-surface-container flex items-center justify-center">
-                  <span className="material-symbols-outlined text-6xl text-outline">movie</span>
-                </div>
-              )}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <button className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-primary/50 bg-background/20 backdrop-blur-md flex items-center justify-center text-primary hover:scale-110 transition-transform">
-                  <span
-                    className="material-symbols-outlined text-3xl md:text-4xl"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    play_arrow
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+        
       </main>
 
       {/* ── Footer ── */}

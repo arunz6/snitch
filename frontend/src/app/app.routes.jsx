@@ -8,7 +8,7 @@ import Protected from "../feature/auth/components/Protected";
 import Productdetail from "../feature/products/pages/Productdetail";
 import Sellerproductdetails from "../feature/products/pages/Sellerproductdetails";
 import Cart from "../feature/cart/pages/Cart";
-
+import Profile from "../feature/sharedcomponent/pages/Profile";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -47,6 +47,10 @@ const router = createBrowserRouter([
     element:<Protected role="seller">
       <Sellerproductdetails />
     </Protected> 
+  },
+  {
+    path:"/profile",
+    element:<Profile />
   }
 ]);
 

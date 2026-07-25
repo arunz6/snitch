@@ -1,0 +1,79 @@
+/* Profile.css - modern premium styling for Profile component */
+
+/* Root variables for easy theming */
+:root {
+  --primary-color: hsl(210, 40%, 55%);
+  --accent-color: hsl(260, 55%, 65%);
+  --bg-gradient: linear-gradient(135deg, hsl(210, 40%, 20%), hsl(260, 45%, 30%));
+  --card-bg: rgba(255, 255, 255, 0.12);
+  --card-blur: 12px;
+  --text-primary: #f0f0f0;
+  --text-muted: #b0b0b0;
+  --font-family: 'Inter', sans-serif;
+}
+
+/* Dark mode base */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+}
+
+.profile-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.profile-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--card-blur));
+  border-radius: 1.5rem;
+  padding: 2rem 3rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.profile-name {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+.profile-role {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-muted);
+}
+
+.profile-info p {
+  margin: 0.6rem 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.profile-info strong {
+  color: var(--primary-color);
+}
+
+/* Hover animation for the card */
+.profile-card:hover {
+  transform: translateY(-4px);
+  transition: transform 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 1.5rem 2rem;
+  }
+  .profile-name {
+    font-size: 1.8rem;
+  }
+}

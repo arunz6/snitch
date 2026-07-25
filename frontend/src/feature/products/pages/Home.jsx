@@ -50,10 +50,7 @@ const Home = () => {
             >
               Curated Archive
             </h1>
-            <p className="max-w-xl mx-auto text-sm leading-relaxed text-white/60">
-              Discover our latest curation of premium minimalist pieces, meticulously
-              designed for effortless elegance and enduring quality.
-            </p>
+            
           </div>
 
           {/* ── Product Grid ── */}

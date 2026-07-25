@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Search, User, ShoppingBag } from "lucide-react";
 import useCart from "../../cart/hook/use.cart";
-
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const { totalQuantity } = useCart();
   const [searchOpen, setSearchOpen] = useState(false);
   const navigate = useNavigate();
   const { handlegetcart } = useCart();
+
+  
+   const user  = useSelector((state) => state.auth.user);
   
   return (
     <div className="w-full bg-black px-6 md:px-10 py-4 flex items-center justify-between border-b border-neutral-800">
@@ -49,6 +52,9 @@ const Navbar = () => {
         <button
           className="text-neutral-300 hover:text-amber-400 transition-colors"
           aria-label="Profile"
+          onClick={()=>{
+            console.log(user);
+            navigate('/profile')}}
         >
           <User size={20} strokeWidth={1.5} />
         </button>
@@ -61,7 +67,7 @@ const Navbar = () => {
           <ShoppingBag size={20} strokeWidth={1.5} />
           <span className="text-sm"></span>
         </button>
-      </div>
+      </div>  
     </div>
   );
 };
