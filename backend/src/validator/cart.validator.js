@@ -17,3 +17,11 @@ export const validateaddtocart = [
     .withMessage("quantity must be at least 1"),
   validateRrequest,
 ];
+
+
+
+export const validateincrementcartquantity =[
+  param("productId").isMongoId().withMessage("invalid product id"),
+  param("variantId").optional().isMongoId().withMessage("invalid variant id"),
+  validateRrequest,
+]

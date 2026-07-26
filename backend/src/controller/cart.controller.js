@@ -101,6 +101,59 @@ export const getcart = async (req, res) => {
   });
 };
 
-export async function incrementcartquantity(req, res) {}
+export async function incrementcartquantity(req, res) {
+  const { productId, variantId } = req.params;
+  const product = await productModel.findOne({
+    _id: productId,
+    "variants._id": variantId,
+  });
 
-export async function decrementcartquantity(req, res) {}
+  if (!product) {
+    return res.status(404).json({
+      success: false,
+      message: "product not found",
+    });
+  }
+
+  const cart = await cartmodel.findOne({ user: req.user._id });
+
+  if (!cart) {
+    return res.status(404).json({
+      success: false,
+      message: "cart not found",
+    });
+  }
+
+  const stock = await stockofvarent(productId, variantId);
+
+  const itemquantityincart =
+    cart.items.find(
+      (item) =>
+        item.product.toString() ===  productId &&
+        item.variant?.toString() === variantId,
+    )?.quantity || 0;
+
+  if (itemquantityincart + 1 > stock) {
+    return res.status(400).json({
+      success: false,
+      message: `only ${stock} items left in stock and you already have ${itemquantityincart} items in your cart`,
+    });
+  }
+
+  await cartmodel.findOneAndUpdate(
+    {
+      user:req.user._id,
+      "items.product":productId,
+      "items.variant":variantId
+    },{
+      $inc:{"items.$.quantity":1}
+    },{new:true}
+  )
+
+  return res.status(200).json({
+    message:"cart updated sucessfully",
+    success:true,
+  })
+}
+
+// export async function decrementcartquantity(req, res) {}
