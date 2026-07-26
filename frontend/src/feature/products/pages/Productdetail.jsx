@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useproduct } from '../hook/use.product';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useproduct } from "../hook/use.product";
 import useCart from "../../cart/hook/use.cart";
-import Navbar from '../../sharedcomponent/pages/Navbar';
+import Navbar from "../../sharedcomponent/pages/Navbar";
 
 const Productdetail = () => {
   const { id } = useParams();
@@ -13,12 +13,11 @@ const Productdetail = () => {
   const product = useSelector((state) => state.product.productdetail);
 
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState('M');
+  const [selectedSize, setSelectedSize] = useState("M");
   const [openAccordion, setOpenAccordion] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(null);
 
-
-   const user  = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   useEffect(() => {
     if (id) {
       handlegetproductdetail(id);
@@ -29,7 +28,7 @@ const Productdetail = () => {
   useEffect(() => {
     setSelectedVariant(null);
     setSelectedImage(0);
-    setSelectedSize('M');
+    setSelectedSize("M");
   }, [product?._id]);
 
   const handleVariantChange = (variant) => {
@@ -37,53 +36,62 @@ const Productdetail = () => {
     if (selectedVariant?._id === variant._id) {
       setSelectedVariant(null);
       setSelectedImage(0);
-      setSelectedSize('M');
+      setSelectedSize("M");
       return;
     }
     setSelectedVariant(variant);
     setSelectedImage(0);
     if (variant?.attributes?.size) {
-      const varSizes = variant.attributes.size.split(',').map(s => s.trim());
+      const varSizes = variant.attributes.size.split(",").map((s) => s.trim());
       if (varSizes.length > 0) {
         setSelectedSize(varSizes[0]);
       }
     } else {
-      setSelectedSize('M');
+      setSelectedSize("M");
     }
   };
   // Format price to INR
   const formatPrice = (amount) => {
-    if (!amount && amount !== 0) return '₹0';
-    return `₹${Number(amount).toLocaleString('en-IN')}`;
+    if (!amount && amount !== 0) return "₹0";
+    return `₹${Number(amount).toLocaleString("en-IN")}`;
   };
 
   // When a variant is selected, show its sizes. Otherwise show default sizes.
   const sizes = selectedVariant?.attributes?.size
-    ? selectedVariant.attributes.size.split(',').map(s => s.trim())
+    ? selectedVariant.attributes.size.split(",").map((s) => s.trim())
     : [];
 
   // Display price: variant price if selected, otherwise product base price
   const displayPrice = selectedVariant?.price?.amount ?? product?.price?.amount;
 
   // Display images: variant images if selected, otherwise product images
-  const activeImages = selectedVariant?.images?.length > 0
-    ? selectedVariant.images
-    : (product?.Images || []);
+  const activeImages =
+    selectedVariant?.images?.length > 0
+      ? selectedVariant.images
+      : product?.Images || [];
 
   const accordionItems = [
     {
-      title: 'Craftsmanship & Materials',
+      title: "Craftsmanship & Materials",
       content: (
         <ul className="py-4 space-y-2 font-body-md text-on-surface-variant text-sm">
-          <li className="flex gap-2"><span>—</span> Premium quality materials</li>
-          <li className="flex gap-2"><span>—</span> Expert craftsmanship & finishing</li>
-          <li className="flex gap-2"><span>—</span> Structural design for perfect drape</li>
-          <li className="flex gap-2"><span>—</span> Signature tonal stitching</li>
+          <li className="flex gap-2">
+            <span>—</span> Premium quality materials
+          </li>
+          <li className="flex gap-2">
+            <span>—</span> Expert craftsmanship & finishing
+          </li>
+          <li className="flex gap-2">
+            <span>—</span> Structural design for perfect drape
+          </li>
+          <li className="flex gap-2">
+            <span>—</span> Signature tonal stitching
+          </li>
         </ul>
       ),
     },
     {
-      title: 'Shipping & Returns',
+      title: "Shipping & Returns",
       content: (
         <div className="py-4 font-body-md text-on-surface-variant text-sm leading-relaxed">
           Complimentary express shipping on all luxury orders. Delivered in our
@@ -93,7 +101,7 @@ const Productdetail = () => {
       ),
     },
     {
-      title: 'Garment Care',
+      title: "Garment Care",
       content: (
         <div className="py-4 font-body-md text-on-surface-variant text-sm leading-relaxed">
           Handle with care. Follow label instructions for washing and ironing.
@@ -104,31 +112,28 @@ const Productdetail = () => {
   ];
 
   const images = activeImages;
-  const currentImage = images[selectedImage]?.url || '';
+  const currentImage = images[selectedImage]?.url || "";
 
-  
-async function handeladdtocartbutton() {
+  async function handeladdtocartbutton() {
+    console.log(user, "user");
 
-  console.log(user,"user");
+    if (!user) {
+      navigate("/login");
+      return;
+    }
 
-if(!user){
-  navigate('/login')
-  return; 
-}
-
-  handeladdtocart({ productid: product._id, variantid: selectedVariant._id })
-}
-
+    handeladdtocart({ productid: product._id, variantid: selectedVariant._id });
+  }
 
   useEffect(() => {
-  if (product?.variants?.length > 0) {
-    setSelectedVariant(product.variants[0]);   // 👈 default first variant
-  } else {
-    setSelectedVariant(null);
-  }
-  setSelectedImage(0);
-  setSelectedSize('M');
-}, [product?._id]);
+    if (product?.variants?.length > 0) {
+      setSelectedVariant(product.variants[0]); // 👈 default first variant
+    } else {
+      setSelectedVariant(null);
+    }
+    setSelectedImage(0);
+    setSelectedSize("M");
+  }, [product?._id]);
 
   if (!product) {
     return (
@@ -143,17 +148,11 @@ if(!user){
     );
   }
 
-
-  
   return (
     <div className="min-h-screen bg-background text-on-background font-body-md selection:bg-primary/30 selection:text-on-primary">
-      {/* ── TopNavBar ── */}
-     <Navbar/>
-
       {/* ── Main Content ── */}
       <main className="pt-28 md:pt-32 pb-20 px-5 md:px-16 max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-
           {/* ── Product Media Gallery ── */}
           <div className="lg:col-span-8 flex flex-col-reverse md:flex-row gap-4 md:gap-6">
             {/* Vertical Thumbnails */}
@@ -164,8 +163,8 @@ if(!user){
                   onClick={() => setSelectedImage(index)}
                   className={`w-16 md:w-24 aspect-[3/4] border overflow-hidden shrink-0 transition-all duration-300 hover:opacity-80 ${
                     selectedImage === index
-                      ? 'border-primary'
-                      : 'border-outline-variant'
+                      ? "border-primary"
+                      : "border-outline-variant"
                   }`}
                 >
                   <img
@@ -187,7 +186,9 @@ if(!user){
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-surface-container">
-                  <span className="material-symbols-outlined text-6xl text-outline">image</span>
+                  <span className="material-symbols-outlined text-6xl text-outline">
+                    image
+                  </span>
                 </div>
               )}
               <div className="absolute top-4 right-4 md:top-6 md:right-6">
@@ -205,13 +206,20 @@ if(!user){
           <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-8 md:space-y-10">
             <header className="space-y-3 md:space-y-4">
               {/* Breadcrumb */}
-              <nav className="flex gap-2 text-[10px] tracking-widest text-on-surface-variant uppercase font-semibold"
-                   style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}>
-                <a className="hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/')}>
+              <nav
+                className="flex gap-2 text-[10px] tracking-widest text-on-surface-variant uppercase font-semibold"
+                style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
+              >
+                <a
+                  className="hover:text-primary transition-colors cursor-pointer"
+                  onClick={() => navigate("/")}
+                >
                   Home
                 </a>
                 <span>/</span>
-                <a className="hover:text-primary transition-colors" href="#">Collections</a>
+                <a className="hover:text-primary transition-colors" href="#">
+                  Collections
+                </a>
                 <span>/</span>
                 <span className="text-primary">{product.title}</span>
               </nav>
@@ -219,7 +227,10 @@ if(!user){
               {/* Title */}
               <h1
                 className="text-3xl md:text-4xl lg:text-5xl text-on-surface leading-none"
-                style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600 }}
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 600,
+                }}
               >
                 {product.title}
               </h1>
@@ -227,7 +238,10 @@ if(!user){
               {/* Price */}
               <p
                 className="text-xl md:text-2xl text-primary"
-                style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600 }}
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 600,
+                }}
               >
                 {formatPrice(displayPrice)}
                 {selectedVariant && (
@@ -245,7 +259,10 @@ if(!user){
               {/* Description */}
               <p
                 className="text-sm md:text-base text-on-surface-variant leading-relaxed"
-                style={{ fontFamily: "'Hanken Grotesk', sans-serif", letterSpacing: '0.02em' }}
+                style={{
+                  fontFamily: "'Hanken Grotesk', sans-serif",
+                  letterSpacing: "0.02em",
+                }}
               >
                 {product.description}
               </p>
@@ -262,8 +279,9 @@ if(!user){
                     </span>
                     <span className="text-xs text-primary font-semibold tracking-wider uppercase font-mono">
                       {selectedVariant
-                        ? (selectedVariant.attributes?.color || 'Variant Selected')
-                        : 'Default'}
+                        ? selectedVariant.attributes?.color ||
+                          "Variant Selected"
+                        : "Default"}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-3">
@@ -276,43 +294,61 @@ if(!user){
                         <button
                           key={variant._id}
                           onClick={() => handleVariantChange(variant)}
-                          title={isSelected ? 'Click to deselect (back to default)' : `Select ${variantColor || 'this variant'}`}
+                          title={
+                            isSelected
+                              ? "Click to deselect (back to default)"
+                              : `Select ${variantColor || "this variant"}`
+                          }
                           className={`group relative flex items-center gap-3 p-2 border transition-all duration-300 cursor-pointer ${
                             isSelected
-                              ? 'border-primary bg-surface-container ring-1 ring-primary/40'
-                              : 'border-outline-variant hover:border-primary bg-transparent'
+                              ? "border-primary bg-surface-container ring-1 ring-primary/40"
+                              : "border-outline-variant hover:border-primary bg-transparent"
                           }`}
                         >
                           {/* Active ring indicator */}
                           {isSelected && (
                             <span className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-primary rounded-full flex items-center justify-center">
-                              <span className="material-symbols-outlined text-on-primary" style={{ fontSize: '10px', fontVariationSettings: "'FILL' 1" }}>check</span>
+                              <span
+                                className="material-symbols-outlined text-on-primary"
+                                style={{
+                                  fontSize: "10px",
+                                  fontVariationSettings: "'FILL' 1",
+                                }}
+                              >
+                                check
+                              </span>
                             </span>
                           )}
                           {variantImage ? (
                             <div className="w-10 h-12 overflow-hidden border border-outline-variant/50">
                               <img
                                 src={variantImage}
-                                alt={variantColor || 'Variant'}
+                                alt={variantColor || "Variant"}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                               />
                             </div>
                           ) : (
                             <div className="w-10 h-12 flex items-center justify-center bg-surface-container-high border border-outline-variant/50">
-                              <span className="material-symbols-outlined text-sm text-outline">image</span>
+                              <span className="material-symbols-outlined text-sm text-outline">
+                                image
+                              </span>
                             </div>
                           )}
                           <div className="flex flex-col items-start pr-2">
-                            <span className={`text-xs font-semibold uppercase tracking-wider ${
-                              isSelected ? 'text-primary' : 'text-on-surface'
-                            }`}>
-                              {variantColor || 'Variant'}
+                            <span
+                              className={`text-xs font-semibold uppercase tracking-wider ${
+                                isSelected ? "text-primary" : "text-on-surface"
+                              }`}
+                            >
+                              {variantColor || "Variant"}
                             </span>
                             <span className="text-[10px] text-on-surface-variant font-mono">
                               {formatPrice(variant.price?.amount)}
                             </span>
                             {variant.stock <= 0 && (
-                              <span className="text-[9px] text-error tracking-widest uppercase mt-0.5">Out of Stock</span>
+                              <span className="text-[9px] text-error tracking-widest uppercase mt-0.5">
+                                Out of Stock
+                              </span>
                             )}
                           </div>
                         </button>
@@ -320,10 +356,13 @@ if(!user){
                     })}
                   </div>
                   {/* Helper text */}
-                  <p className="text-[10px] text-on-surface-variant tracking-wider" style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}>
+                  <p
+                    className="text-[10px] text-on-surface-variant tracking-wider"
+                    style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
+                  >
                     {selectedVariant
-                      ? 'Showing variant images & price — click again to return to default'
-                      : 'Showing default product — click a variant to see its images & price'}
+                      ? "Showing variant images & price — click again to return to default"
+                      : "Showing default product — click a variant to see its images & price"}
                   </p>
                 </div>
               )}
@@ -351,8 +390,8 @@ if(!user){
                       onClick={() => setSelectedSize(size)}
                       className={`w-12 h-12 flex items-center justify-center border text-xs font-semibold tracking-[0.15em] transition-all duration-300 cursor-pointer ${
                         selectedSize === size
-                          ? 'bg-primary text-on-primary border-primary'
-                          : 'border-outline text-on-surface hover:border-primary'
+                          ? "bg-primary text-on-primary border-primary"
+                          : "border-outline text-on-surface hover:border-primary"
                       }`}
                       style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
                     >
@@ -384,16 +423,20 @@ if(!user){
                 className="w-full bg-primary text-on-primary h-14 text-xs font-semibold tracking-[0.2em] uppercase hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
               >
-                {selectedVariant && selectedVariant.stock <= 0 ? 'Out of Stock' : 'Buy Now'}
+                {selectedVariant && selectedVariant.stock <= 0
+                  ? "Out of Stock"
+                  : "Buy Now"}
               </button>
               {/* add to cart  */}
               <button
                 disabled={selectedVariant && selectedVariant.stock <= 0}
-                onClick={() =>handeladdtocartbutton()}
+                onClick={() => handeladdtocartbutton()}
                 className="w-full bg-transparent border border-outline text-on-surface h-14 text-xs font-semibold tracking-[0.2em] uppercase hover:border-primary hover:text-primary transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 style={{ fontFamily: "'Hanken Grotesk', sans-serif" }}
               >
-                {selectedVariant && selectedVariant.stock <= 0 ? 'Out of Stock' : 'Add to Bag'}
+                {selectedVariant && selectedVariant.stock <= 0
+                  ? "Out of Stock"
+                  : "Add to Bag"}
               </button>
             </div>
 
@@ -402,7 +445,7 @@ if(!user){
               {accordionItems.map((item, index) => (
                 <div
                   key={index}
-                  className={index > 0 ? 'border-t border-outline-variant' : ''}
+                  className={index > 0 ? "border-t border-outline-variant" : ""}
                 >
                   <button
                     className="w-full flex justify-between items-center py-3 group"
@@ -418,7 +461,7 @@ if(!user){
                     </span>
                     <span
                       className={`material-symbols-outlined text-outline group-hover:text-primary transition-all duration-300 ${
-                        openAccordion === index ? 'rotate-180' : ''
+                        openAccordion === index ? "rotate-180" : ""
                       }`}
                     >
                       expand_more
@@ -427,7 +470,7 @@ if(!user){
                   <div
                     className="overflow-hidden transition-all duration-300 ease-out"
                     style={{
-                      maxHeight: openAccordion === index ? '200px' : '0px',
+                      maxHeight: openAccordion === index ? "200px" : "0px",
                     }}
                   >
                     {item.content}
@@ -437,8 +480,6 @@ if(!user){
             </div>
           </div>
         </div>
-
-        
       </main>
 
       {/* ── Footer ── */}
@@ -447,13 +488,19 @@ if(!user){
           <div className="space-y-4 md:space-y-6">
             <span
               className="text-3xl md:text-4xl text-primary"
-              style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700 }}
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 700,
+              }}
             >
               SNITCH
             </span>
             <p
               className="text-sm md:text-base text-on-surface-variant max-w-xs leading-relaxed"
-              style={{ fontFamily: "'Hanken Grotesk', sans-serif", letterSpacing: '0.02em' }}
+              style={{
+                fontFamily: "'Hanken Grotesk', sans-serif",
+                letterSpacing: "0.02em",
+              }}
             >
               Luxury defined by silence. Editorial precision for the modern
               vanguard.
@@ -469,9 +516,30 @@ if(!user){
                 Company
               </h4>
               <ul className="space-y-2">
-                <li><a className="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Information</a></li>
-                <li><a className="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping</a></li>
-                <li><a className="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Returns</a></li>
+                <li>
+                  <a
+                    className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                    href="#"
+                  >
+                    Information
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                    href="#"
+                  >
+                    Shipping
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                    href="#"
+                  >
+                    Returns
+                  </a>
+                </li>
               </ul>
             </div>
             <div className="space-y-4">
@@ -482,8 +550,22 @@ if(!user){
                 Legal
               </h4>
               <ul className="space-y-2">
-                <li><a className="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a></li>
-                <li><a className="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a></li>
+                <li>
+                  <a
+                    className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                    href="#"
+                  >
+                    Privacy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                    href="#"
+                  >
+                    Terms
+                  </a>
+                </li>
               </ul>
             </div>
             <div className="space-y-4 col-span-2 md:col-span-1">
@@ -501,7 +583,9 @@ if(!user){
                   type="email"
                 />
                 <button className="text-primary">
-                  <span className="material-symbols-outlined">arrow_forward</span>
+                  <span className="material-symbols-outlined">
+                    arrow_forward
+                  </span>
                 </button>
               </div>
             </div>
@@ -511,14 +595,33 @@ if(!user){
         <div className="max-w-[1440px] mx-auto w-full mt-12 md:mt-20 pt-8 md:pt-10 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4">
           <span
             className="text-xs md:text-sm text-on-surface-variant"
-            style={{ fontFamily: "'Hanken Grotesk', sans-serif", letterSpacing: '0.02em' }}
+            style={{
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              letterSpacing: "0.02em",
+            }}
           >
-            © {new Date().getFullYear()} SNITCH LUXURY EDITORIAL. ALL RIGHTS RESERVED.
+            © {new Date().getFullYear()} SNITCH LUXURY EDITORIAL. ALL RIGHTS
+            RESERVED.
           </span>
           <div className="flex gap-6">
-            <a className="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Instagram</a>
-            <a className="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Vimeo</a>
-            <a className="text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Threads</a>
+            <a
+              className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+              href="#"
+            >
+              Instagram
+            </a>
+            <a
+              className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+              href="#"
+            >
+              Vimeo
+            </a>
+            <a
+              className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+              href="#"
+            >
+              Threads
+            </a>
           </div>
         </div>
       </footer>

@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useproduct } from '../hook/use.product';
-import { useNavigate } from 'react-router-dom';
-import Navbar from '../../sharedcomponent/pages/Navbar';
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useproduct } from "../hook/use.product";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../../sharedcomponent/pages/Navbar";
 
 // Ebon & Gilt palette
 const COLORS = {
-  primary: '#EAB308',   // gold accent
-  secondary: '#0A0A0A', // near-black background
-  tertiary: '#60C5FF',  // blue hover/links
-  neutral: '#FFFFFF',   // text
+  primary: "#EAB308", // gold accent
+  secondary: "#0A0A0A", // near-black background
+  tertiary: "#60C5FF", // blue hover/links
+  neutral: "#FFFFFF", // text
 };
 
 const Home = () => {
@@ -30,11 +30,11 @@ const Home = () => {
 
       <div
         className="min-h-screen selection:bg-[#EAB308]/30"
-        style={{ backgroundColor: COLORS.secondary, fontFamily: "'Hanken Grotesk', sans-serif" }}
+        style={{
+          backgroundColor: COLORS.secondary,
+          fontFamily: "'Hanken Grotesk', sans-serif",
+        }}
       >
-        {/* ── Navbar ── */}
-        <Navbar />
-
         <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24">
           {/* ── Hero / Header ── */}
           <div className="pt-20 pb-20 text-center flex flex-col items-center">
@@ -46,11 +46,13 @@ const Home = () => {
             </span>
             <h1
               className="text-5xl lg:text-7xl font-light leading-tight mb-6"
-              style={{ fontFamily: "'Playfair Display', serif", color: COLORS.neutral }}
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                color: COLORS.neutral,
+              }}
             >
               Curated Archive
             </h1>
-            
           </div>
 
           {/* ── Product Grid ── */}
@@ -60,7 +62,7 @@ const Home = () => {
                 const imageUrl =
                   product.Images && product.Images.length > 0
                     ? product.Images[0].url
-                    : '/snitch_editorial_warm.png';
+                    : "/snitch_editorial_warm.png";
 
                 return (
                   <div
@@ -70,7 +72,7 @@ const Home = () => {
                   >
                     <div
                       className="aspect-[4/5] overflow-hidden mb-6 border border-white/10"
-                      style={{ backgroundColor: '#141414' }}
+                      style={{ backgroundColor: "#141414" }}
                     >
                       <img
                         src={imageUrl}
@@ -82,7 +84,10 @@ const Home = () => {
                     <div className="flex flex-col gap-2">
                       <h3
                         className="text-xl leading-snug transition-colors duration-300 group-hover:text-[#60C5FF]"
-                        style={{ fontFamily: "'Playfair Display', serif", color: COLORS.neutral }}
+                        style={{
+                          fontFamily: "'Playfair Display', serif",
+                          color: COLORS.neutral,
+                        }}
                       >
                         {product.title}
                       </h3>
@@ -96,7 +101,8 @@ const Home = () => {
                           className="text-[10px] uppercase tracking-[0.2em] font-medium"
                           style={{ color: COLORS.primary }}
                         >
-                          {product.price?.currency} {product.price?.amount?.toLocaleString()}
+                          {product.price?.currency}{" "}
+                          {product.price?.amount?.toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -108,12 +114,16 @@ const Home = () => {
             <div className="py-24 text-center flex flex-col items-center">
               <h2
                 className="text-2xl mb-4"
-                style={{ fontFamily: "'Playfair Display', serif", color: COLORS.neutral }}
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  color: COLORS.neutral,
+                }}
               >
                 No pieces available.
               </h2>
               <p className="max-w-md mx-auto text-sm leading-relaxed text-white/50">
-                We are currently preparing our next collection. Please check back later.
+                We are currently preparing our next collection. Please check
+                back later.
               </p>
             </div>
           )}
@@ -123,7 +133,10 @@ const Home = () => {
         <footer className="border-t border-white/10 py-12 text-center">
           <span
             className="text-[10px] uppercase tracking-[0.35em]"
-            style={{ fontFamily: "'Playfair Display', serif", color: COLORS.primary }}
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              color: COLORS.primary,
+            }}
           >
             Snitch. © {new Date().getFullYear()}
           </span>

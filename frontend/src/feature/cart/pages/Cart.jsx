@@ -50,7 +50,7 @@ console.log(cart)
         fontFamily: "'Hanken Grotesk', sans-serif",
       }}
     >
-      <Navbar />
+    
       <div className="max-w-6xl mx-auto px-6 lg:px-12 py-16">
         {/* Header */}
         <div className="mb-12">

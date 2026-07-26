@@ -9,15 +9,8 @@ import Productdetail from "../feature/products/pages/Productdetail";
 import Sellerproductdetails from "../feature/products/pages/Sellerproductdetails";
 import Cart from "../feature/cart/pages/Cart";
 import Profile from "../feature/sharedcomponent/pages/Profile";
+import Applayout from "./Applayout";
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path:"/cart",
-    element: <Cart/>
-  },
   {
     path: "/register",
     element: <Register />,
@@ -27,31 +20,50 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/seller/createProduct",
-    element: <Protected role="seller">
-      <Createproduct />
-    </Protected>,
+    element: <Applayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/seller/createProduct",
+        element: (
+          <Protected role="seller">
+            <Createproduct />
+          </Protected>
+        ),
+      },
+      {
+        path: "/seller/productdashbord",
+        element: (
+          <Protected role="seller">
+            <ProductDashboard />
+          </Protected>
+        ),
+      },
+      {
+        path: "/product/:id",
+        element: <Productdetail />,
+      },
+      {
+        path: "/seller/Sellerproductdetails/:id",
+        element: (
+          <Protected role="seller">
+            <Sellerproductdetails />
+          </Protected>
+        ),
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+    ],
   },
-  {
-    path: "/seller/productdashbord",
-    element: <Protected role="seller">
-      <ProductDashboard />
-    </Protected>
-  },
-  {
-    path: "/product/:id",
-    element: <Productdetail />
-  },
-  {
-    path:"/seller/Sellerproductdetails/:id",
-    element:<Protected role="seller">
-      <Sellerproductdetails />
-    </Protected> 
-  },
-  {
-    path:"/profile",
-    element:<Profile />
-  }
 ]);
 
 export default router;
