@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useCart from "../hook/use.cart";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,8 @@ const Cart = () => {
   const { handlegetcart } = useCart();
   const navigate = useNavigate();
 
+  
+console.log(cart)
   useEffect(() => {
     handlegetcart();
   }, []);
@@ -152,6 +154,7 @@ const Cart = () => {
                       </div>
 
                       <div className="flex items-center justify-between mt-4">
+                        {/* quantity change  */}
                         <div className="flex items-center border border-white/15">
                           <button className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors">
                             −
