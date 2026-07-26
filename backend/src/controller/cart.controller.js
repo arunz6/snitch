@@ -7,7 +7,7 @@ export const addtocart = async (req, res) => {
   const { quantity = 1 } = req.body;
   const user = req.user;
 
-  const product = await productModel.findOne({   
+  const product = await productModel.findOne({
     _id: productId,
     "variants._id": variantId,
   });
@@ -31,7 +31,7 @@ export const addtocart = async (req, res) => {
       item.variant.toString() === variantId,
   );
 
-  if (isproductareadyincart) {  
+  if (isproductareadyincart) {
     const quantityInCart = cart.items.find(
       (item) =>
         item.product.toString() === productId &&
@@ -86,7 +86,9 @@ export const addtocart = async (req, res) => {
 
 export const getcart = async (req, res) => {
   const user = req.user;
-  let cart = await cartmodel.findOne({ user: user._id }).populate("items.product");
+  let cart = await cartmodel
+    .findOne({ user: user._id })
+    .populate("items.product");
 
   if (!cart) {
     cart = await cartmodel.create({ user: user._id });
@@ -98,4 +100,7 @@ export const getcart = async (req, res) => {
     cart,
   });
 };
-  
+
+export async function incrementcartquantity(req, res) {}
+
+export async function decrementcartquantity(req, res) {}
