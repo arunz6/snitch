@@ -14,12 +14,9 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart.items);
   const { handlegetcart ,handleIncrementCartItem } = useCart();
   const navigate = useNavigate();
-
-  
-console.log(cart)
   useEffect(() => {
     handlegetcart();
-  }, []);
+  }, [cart]);
 
   const items = cart.cart?.items || [];
 

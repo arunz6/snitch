@@ -43,5 +43,6 @@ export const {
   additem,
   removeitem,
   updatequantity,
+  incrementCartItem
 } = cartslice.actions;
 export default cartslice.reducer;

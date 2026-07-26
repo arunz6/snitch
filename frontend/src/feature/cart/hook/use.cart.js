@@ -1,6 +1,6 @@
-import { additem, getusercart,incrementCartItemApi } from "../service/cart.api";
+import { additem, getusercart, incrementCartItemApi } from "../service/cart.api";
 import { useDispatch } from "react-redux";
-import { additem as addditemtocart, setitems   } from "../state/cart.slice";
+import { additem as addditemtocart, setitems , incrementCartItem} from "../state/cart.slice";
 
 const useCart = () => {
   const dispatch = useDispatch();
