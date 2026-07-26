@@ -22,9 +22,26 @@ const cartslice = createSlice({
     seterror: (state, action) => {
       state.error = action.payload;
     },
+    incrementCartItem: (state, action) => {
+      const { productId, variantId } = action.payload;
+
+      state.items = state.items.map((item) => {
+        if (item.product._id === productId && item.variant === variantId) {
+          return { ...item, quantity: item.quantity + 1 };
+        } else {
+          return item;
+        }
+      });
+    },
   },
 });
 
-export const { setitems, setloading, seterror, additem, removeitem, updatequantity } =
-  cartslice.actions;
+export const {
+  setitems,
+  setloading,
+  seterror,
+  additem,
+  removeitem,
+  updatequantity,
+} = cartslice.actions;
 export default cartslice.reducer;

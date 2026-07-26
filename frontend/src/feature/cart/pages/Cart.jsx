@@ -12,7 +12,7 @@ const COLORS = {
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart.items);
-  const { handlegetcart } = useCart();
+  const { handlegetcart ,handleIncrementCartItem } = useCart();
   const navigate = useNavigate();
 
   
@@ -162,7 +162,8 @@ console.log(cart)
                           <span className="px-4 text-sm text-white">
                             {item.quantity}
                           </span>
-                          <button className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors">
+                          <button className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors"
+                            onClick={() => handleIncrementCartItem({ productId: item.product._id, variantId: item.variant })} >
                             +
                           </button>
                         </div>

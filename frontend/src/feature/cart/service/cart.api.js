@@ -17,3 +17,9 @@ export const getusercart = async () => {
   const response = await cartapiinstance.get("/getcart");
   return response.data;
 };
+
+
+export const incrementCartItemApi = async ({ productId, variantId }) => {
+    const response = await cartapiinstance.patch(`/quantity/increment/${productId}/${variantId}`)
+    return response.data
+}
