@@ -7,6 +7,9 @@ const Navbar = () => {
   const { totalQuantity } = useCart();
   const [searchOpen, setSearchOpen] = useState(false);
   const navigate = useNavigate();
+
+
+  //thi is static nebar come on every page 
   const { handlegetcart } = useCart();
 
   
@@ -18,10 +21,16 @@ const Navbar = () => {
   if(!user){
     navigate('/login')
     return; 
+
+
+
   }
   
    navigate("/cart")
   }
+
+
+
   return (
     <div className="w-full bg-black px-6 md:px-10 py-4 flex items-center justify-between border-b border-neutral-800">
       {/* Left: Logo */}
