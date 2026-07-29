@@ -8,7 +8,7 @@ import {
   addtocart,
   getcart,
   incrementcartquantity,
-  // decrementcartquantity,
+  decrementcartquantity,
 } from "../controller/cart.controller.js";
 const cartroute = Router();
 
@@ -27,10 +27,11 @@ cartroute.patch(
   validateincrementcartquantity,
   incrementcartquantity,
 );
-// cartroute.patch(
-//   "/quantity/decrement/:productId/:variantId",
-//   getme,
-//   decrementcartquantity,
-// );
+cartroute.patch(
+  "/quantity/decrement/:productId/:variantId",
+  getme,
+  validateincrementcartquantity,
+  decrementcartquantity,
+);
 
 export default cartroute;
