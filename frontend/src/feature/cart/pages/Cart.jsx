@@ -16,7 +16,7 @@ const Cart = () => {
   const navigate = useNavigate();
   useEffect(() => {
     handlegetcart();
-  }, [cart]);
+  }, []);
 
   const items = cart.cart?.items || [];
 
