@@ -12,7 +12,7 @@ const COLORS = {
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart.items);
-  const { handlegetcart ,handleIncrementCartItem } = useCart();
+  const { handlegetcart ,handleIncrementCartItem , handleDecrementCartItem } = useCart();
   const navigate = useNavigate();
   useEffect(() => {
     handlegetcart();
@@ -153,7 +153,8 @@ const Cart = () => {
                       <div className="flex items-center justify-between mt-4">
                         {/* quantity change  */}
                         <div className="flex items-center border border-white/15">
-                          <button className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors">
+                          <button className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors"
+                          onClick={()=> handleDecrementCartItem({ productId: item.product._id, variantId: item.variant })} >
                             −
                           </button>
                           <span className="px-4 text-sm text-white">

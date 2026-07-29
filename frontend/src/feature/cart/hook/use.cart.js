@@ -1,6 +1,6 @@
-import { additem, getusercart, incrementCartItemApi } from "../service/cart.api";
+import { additem, getusercart, incrementCartItemApi ,decrementcartitemapi } from "../service/cart.api";
 import { useDispatch } from "react-redux";
-import { additem as addditemtocart, setitems , incrementCartItem} from "../state/cart.slice";
+import { additem as addditemtocart, setitems , incrementCartItem,decrementCartItem} from "../state/cart.slice";
 
 const useCart = () => {
   const dispatch = useDispatch();
@@ -19,8 +19,12 @@ const useCart = () => {
         await incrementCartItemApi({ productId, variantId })
         dispatch(incrementCartItem({ productId, variantId }))
     }
+    async function handleDecrementCartItem({ productId, variantId }) {
+      await decrementcartitemapi({ productId, variantId })
+      dispatch(decrementCartItem({ productId, variantId }))
+    }
 
-  return { handeladdtocart, handlegetcart ,handleIncrementCartItem };
+  return { handeladdtocart, handlegetcart ,handleIncrementCartItem,handleDecrementCartItem };
 };
 
 export default useCart;
