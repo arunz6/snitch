@@ -8,18 +8,7 @@ app.listen(config.port, () => {
   console.log(`server is running at ${config.port} `);
 });
 
-//arun1234
-//password
-// class running 145 snitchL?/
-///class 148 snitch running
-//class 149 snitch running 48min
-// class 150  24min
-// class 151 53 min
-//class 151 done 1:25 min
-//class 152 done
 
-
- //153 start
 
  //class 153 55 min done 
  
