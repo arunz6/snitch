@@ -12,7 +12,8 @@ const COLORS = {
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart.items);
-  const { handlegetcart ,handleIncrementCartItem , handleDecrementCartItem } = useCart();
+  const { handlegetcart, handleIncrementCartItem, handleDecrementCartItem } =
+    useCart();
   const navigate = useNavigate();
   useEffect(() => {
     handlegetcart();
@@ -34,6 +35,11 @@ const Cart = () => {
     return variant?.attributes || {};
   };
 
+    const getVariantprice = (product, variantId) => {
+    const variant = product?.variants?.find((v) => v._id === variantId);
+    return variant?.price || {};
+  };
+
   const subtotal = items.reduce(
     (sum, item) => sum + (item.price?.amount || 0) * item.quantity,
     0,
@@ -47,7 +53,6 @@ const Cart = () => {
         fontFamily: "'Hanken Grotesk', sans-serif",
       }}
     >
-    
       <div className="max-w-6xl mx-auto px-6 lg:px-12 py-16">
         {/* Header */}
         <div className="mb-12">
@@ -98,6 +103,11 @@ const Cart = () => {
                 const attrs = getVariantAttributes(product, item.variant);
                 const image = getVariantImage(product, item.variant);
 
+                const productprice  = product.price.amount;
+                 const varientprice = getVariantprice(product, item.variant);
+              console.log("product price ", productprice)
+              console.log("varient price ", varientprice)
+
                 return (
                   <div key={item._id} className="flex gap-6 py-8 first:pt-0">
                     {/* Image */}
@@ -140,7 +150,7 @@ const Cart = () => {
                             )}
                           </p>
                         )}
-
+                        {/* price */}
                         <span
                           className="text-sm font-medium block"
                           style={{ color: COLORS.primary }}
@@ -148,20 +158,53 @@ const Cart = () => {
                           {item.price?.currency}{" "}
                           {item.price?.amount?.toLocaleString()}
                         </span>
+                       {
+                        productprice !== varientprice.amount &&(
+                          productprice > varientprice.amount ? ( 
+                            <span
+                            className="text-sm font-medium block"
+                            style={{ color: COLORS.primary }}>
+                              {varientprice.currency}{" "}
+                              {`prodcut price is ${productprice} you got this at ${varientprice.amount}`}
+                            </span>
+                          ):(
+                            <span
+                            className="text-sm font-medium block"
+                            style={{ color: COLORS.primary }}>
+                              {productprice.currency}{" "}
+                              {productprice.amount?.toLocaleString()}
+                            </span>
+                          )
+                        )
+                       }
                       </div>
 
                       <div className="flex items-center justify-between mt-4">
                         {/* quantity change  */}
                         <div className="flex items-center border border-white/15">
-                          <button className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors"
-                          onClick={()=> handleDecrementCartItem({ productId: item.product._id, variantId: item.variant })} >
+                          <button
+                            className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors"
+                            onClick={() =>
+                              handleDecrementCartItem({
+                                productId: item.product._id,
+                                variantId: item.variant,
+                              })
+                            }
+                          >
                             −
                           </button>
                           <span className="px-4 text-sm text-white">
                             {item.quantity}
                           </span>
-                          <button className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors"
-                            onClick={() => handleIncrementCartItem({ productId: item.product._id, variantId: item.variant })} >
+                          <button
+                            className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors"
+                            onClick={() =>
+                              handleIncrementCartItem({
+                                productId: item.product._id,
+                                variantId: item.variant,
+                              })
+                            }
+                          >
                             +
                           </button>
                         </div>
