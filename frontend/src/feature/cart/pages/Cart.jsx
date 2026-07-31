@@ -162,18 +162,13 @@ const Cart = () => {
                         productprice !== varientprice.amount &&(
                           productprice > varientprice.amount ? ( 
                             <span
-                            className="text-sm font-medium block"
-                            style={{ color: COLORS.primary }}>
+                            className="text-sm font-medium block text-green-200"
+                            >
                               {varientprice.currency}{" "}
                               {`prodcut price is ${productprice} you got this at ${varientprice.amount}`}
                             </span>
                           ):(
-                            <span
-                            className="text-sm font-medium block"
-                            style={{ color: COLORS.primary }}>
-                              {productprice.currency}{" "}
-                              {productprice.amount?.toLocaleString()}
-                            </span>
+                           <></>
                           )
                         )
                        }
