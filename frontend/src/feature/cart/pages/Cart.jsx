@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useCart from "../hook/use.cart";
 import { useNavigate } from "react-router-dom";
+import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import Navbar from "../../sharedcomponent/pages/Navbar";
 const COLORS = {
   primary: "#EAB308",
@@ -11,6 +12,8 @@ const COLORS = {
 };
 
 const Cart = () => {
+  // razarpay  data variable
+  const { error, isLoading, Razorpay } = useRazorpay();
   const cart = useSelector((state) => state.cart.items);
   const { handlegetcart, handleIncrementCartItem, handleDecrementCartItem } =
     useCart();
@@ -27,6 +30,33 @@ const Cart = () => {
 
   const items = cartData?.items || [];
 
+
+  // razarpay function 
+   const handlePayment = () => {
+    const options = {
+      key: "YOUR_RAZORPAY_KEY",
+      amount: 50000, // Amount in paise
+      currency: "INR",
+      name: "Test Company",
+      description: "Test Transaction",
+      order_id: "order_9A33XWu170gUtm", // Generate order_id on server
+      handler: (response) => {
+        console.log(response);
+        alert("Payment Successful!");
+      },
+      prefill: {
+        name: "John Doe",
+        email: "john.doe@example.com",
+        contact: "9999999999",
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const razorpayInstance = new Razorpay(options);
+    razorpayInstance.open();
+  };
   const getVariantObj = (product, variantId) => {
     if (!product) return null;
     if (Array.isArray(product.variants)) {
@@ -273,6 +303,7 @@ const Cart = () => {
                     backgroundColor: COLORS.primary,
                     color: COLORS.secondary,
                   }}
+                  onClick={handlePayment} 
                 >
                   Proceed to Checkout
                 </button>
