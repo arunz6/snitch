@@ -24,25 +24,41 @@ const cartslice = createSlice({
     },
     incrementCartItem: (state, action) => {
       const { productId, variantId } = action.payload;
-      const items = state.items.cart?.items;
-      if (!items) return;
+      const cartObj = Array.isArray(state.items?.cart)
+        ? state.items.cart[0]
+        : Array.isArray(state.items)
+        ? state.items[0]
+        : state.items?.cart || state.items;
 
-      state.items.cart.items = items.map((item) =>
-        item.product._id === productId && item.variant === variantId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      );
+      if (!cartObj?.items) return;
+
+      cartObj.items = cartObj.items.map((item) => {
+        const itemProdId = item.product?._id || item.product;
+        const itemVarId = item.variant?._id || item.variant;
+        if (itemProdId === productId && itemVarId === variantId) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
     },
     decrementCartItem: (state, action) => {
       const { productId, variantId } = action.payload;
-      const items = state.items.cart?.items;
-      if (!items) return;
+      const cartObj = Array.isArray(state.items?.cart)
+        ? state.items.cart[0]
+        : Array.isArray(state.items)
+        ? state.items[0]
+        : state.items?.cart || state.items;
 
-      state.items.cart.items = items.map((item) =>
-        item.product._id === productId && item.variant === variantId
-          ? { ...item, quantity: item.quantity - 1 }
-          : item,
-      );
+      if (!cartObj?.items) return;
+
+      cartObj.items = cartObj.items.map((item) => {
+        const itemProdId = item.product?._id || item.product;
+        const itemVarId = item.variant?._id || item.variant;
+        if (itemProdId === productId && itemVarId === variantId) {
+          return { ...item, quantity: item.quantity - 1 };
+        }
+        return item;
+      });
     },
   },
 });

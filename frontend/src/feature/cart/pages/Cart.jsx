@@ -19,10 +19,27 @@ const Cart = () => {
     handlegetcart();
   }, []);
 
-  const items = cart.cart?.items || [];
+  const cartData = Array.isArray(cart?.cart)
+    ? cart.cart[0]
+    : Array.isArray(cart)
+    ? cart[0]
+    : cart?.cart || cart || {};
+
+  const items = cartData?.items || [];
+
+  const getVariantObj = (product, variantId) => {
+    if (!product) return null;
+    if (Array.isArray(product.variants)) {
+      return product.variants.find((v) => v._id === (variantId?._id || variantId)) || null;
+    }
+    if (product.variants && typeof product.variants === "object") {
+      return product.variants;
+    }
+    return null;
+  };
 
   const getVariantImage = (product, variantId) => {
-    const variant = product?.variants?.find((v) => v._id === variantId);
+    const variant = getVariantObj(product, variantId);
     return (
       variant?.images?.[0]?.url ||
       product?.Images?.[0]?.url ||
@@ -31,19 +48,23 @@ const Cart = () => {
   };
 
   const getVariantAttributes = (product, variantId) => {
-    const variant = product?.variants?.find((v) => v._id === variantId);
+    const variant = getVariantObj(product, variantId);
     return variant?.attributes || {};
   };
 
-    const getVariantprice = (product, variantId) => {
-    const variant = product?.variants?.find((v) => v._id === variantId);
+  const getVariantprice = (product, variantId) => {
+    const variant = getVariantObj(product, variantId);
     return variant?.price || {};
   };
 
-  const subtotal = items.reduce(
-    (sum, item) => sum + (item.price?.amount || 0) * item.quantity,
-    0,
-  );
+  const subtotal = items.reduce((sum, item) => {
+    const vPrice =
+      getVariantprice(item.product, item.variant).amount ??
+      item.price?.amount ??
+      item.product?.price?.amount ??
+      0;
+    return sum + vPrice * item.quantity;
+  }, 0);
 
   return (
     <div
@@ -99,28 +120,30 @@ const Cart = () => {
             {/* Items List */}
             <div className="lg:col-span-2 flex flex-col divide-y divide-white/10">
               {items.map((item) => {
-                const product = item.product;
-                const attrs = getVariantAttributes(product, item.variant);
-                const image = getVariantImage(product, item.variant);
+                const product = item.product || {};
+                const variantId = item.variant?._id || item.variant;
+                const attrs = getVariantAttributes(product, variantId);
+                const image = getVariantImage(product, variantId);
 
-                const productprice  = product.price.amount;
-                 const varientprice = getVariantprice(product, item.variant);
-              console.log("product price ", productprice)
-              console.log("varient price ", varientprice)
+                const productprice = product?.price?.amount;
+                const varientprice = getVariantprice(product, variantId);
+
+                const displayPrice = varientprice.amount ?? item.price?.amount ?? productprice;
+                const displayCurrency = varientprice.currency || item.price?.currency || product?.price?.currency || "INR";
 
                 return (
                   <div key={item._id} className="flex gap-6 py-8 first:pt-0">
                     {/* Image */}
                     <div
-                      className="w-28 h-32 sm:w-32 sm:h-40 flex-shrink-0 overflow-hidden border border-white/10"
+                      className="w-28 h-32 sm:w-32 sm:h-40 flex-shrink-0 overflow-hidden border border-white/10 cursor-pointer"
                       style={{ backgroundColor: "#141414" }}
                       onClick={() => {
-                        navigate(`/product/${item.product._id}`);
+                        if (product._id) navigate(`/product/${product._id}`);
                       }}
                     >
                       <img
                         src={image}
-                        alt={product?.title}
+                        alt={product?.title || "Product image"}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -128,8 +151,9 @@ const Cart = () => {
                     {/* Details */}
                     <div className="flex flex-col flex-1 justify-between">
                       <div
+                        className="cursor-pointer"
                         onClick={() => {
-                          navigate(`/product/${item.product._id}`);
+                          if (product._id) navigate(`/product/${product._id}`);
                         }}
                       >
                         <h3
@@ -155,23 +179,18 @@ const Cart = () => {
                           className="text-sm font-medium block"
                           style={{ color: COLORS.primary }}
                         >
-                          {item.price?.currency}{" "}
-                          {item.price?.amount?.toLocaleString()}
+                          {displayCurrency} {displayPrice?.toLocaleString()}
                         </span>
-                       {
-                        productprice !== varientprice.amount &&(
-                          productprice > varientprice.amount ? ( 
+                        {productprice && varientprice.amount && productprice !== varientprice.amount && (
+                          productprice > varientprice.amount ? (
                             <span
-                            className="text-sm font-medium block text-green-200"
+                              className="text-sm font-medium block text-green-200"
                             >
-                              {varientprice.currency}{" "}
-                              {`prodcut price is ${productprice} you got this at ${varientprice.amount}`}
+                              {varientprice.currency || "INR"}{" "}
+                              {`product price is ${productprice} you got this at ${varientprice.amount}`}
                             </span>
-                          ):(
-                           <></>
-                          )
-                        )
-                       }
+                          ) : null
+                        )}
                       </div>
 
                       <div className="flex items-center justify-between mt-4">
@@ -181,8 +200,8 @@ const Cart = () => {
                             className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors"
                             onClick={() =>
                               handleDecrementCartItem({
-                                productId: item.product._id,
-                                variantId: item.variant,
+                                productId: product._id,
+                                variantId: variantId,
                               })
                             }
                           >
@@ -195,8 +214,8 @@ const Cart = () => {
                             className="px-3 py-1 text-white/70 hover:text-[#EAB308] transition-colors"
                             onClick={() =>
                               handleIncrementCartItem({
-                                productId: item.product._id,
-                                variantId: item.variant,
+                                productId: product._id,
+                                variantId: variantId,
                               })
                             }
                           >
