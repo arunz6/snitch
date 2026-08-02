@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useproduct } from "../hook/use.product";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../sharedcomponent/pages/Navbar";
+
 
 // Ebon & Gilt palette
 const COLORS = {
@@ -128,19 +128,6 @@ const Home = () => {
             </div>
           )}
         </div>
-
-        {/* ── Footer ── */}
-        <footer className="border-t border-white/10 py-12 text-center">
-          <span
-            className="text-[10px] uppercase tracking-[0.35em]"
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              color: COLORS.primary,
-            }}
-          >
-            Snitch. © {new Date().getFullYear()}
-          </span>
-        </footer>
       </div>
     </>
   );
